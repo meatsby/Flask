@@ -1,3 +1,9 @@
+#%%
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.rcParams["font.family"] = "Malgun Gothic"
+matplotlib.rcParams["font.size"] = 15
+matplotlib.rcParams["axes.unicode_minus"] = False
 from pprint import pprint
 from Google import *
 
@@ -9,8 +15,8 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 response = service.calendarList().list().execute()
 
-start_date = input()
-end_date = input()
+start_date = "2021-10-11"
+end_date = "2021-10-17"
 
 ename = []
 etime = []
@@ -49,3 +55,10 @@ for c in calendars[1:8]:
 
 print(ename)
 print(etime)
+
+wedgeprops={"width":0.8}
+plt.pie(etime, labels=ename, autopct="%.1f%%", startangle=90, counterclock=False, wedgeprops=wedgeprops)
+plt.legend(loc=(1.2, 0.3))
+plt.show()
+
+# %%
