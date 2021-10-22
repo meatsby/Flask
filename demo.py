@@ -1,4 +1,4 @@
-#%%
+# %%
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams["font.family"] = "Malgun Gothic"
@@ -15,8 +15,8 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 response = service.calendarList().list().execute()
 
-start_date = "2021-10-11"
-end_date = "2021-10-17"
+start_date = input("시작일을 입력해주세요.")# "2021-10-11"
+end_date = input("종료일을 입력해주세요.")# "2021-10-11"
 
 ename = []
 etime = []
@@ -53,12 +53,49 @@ for c in calendars[1:8]:
         elif k in ename:
             etime[ename.index(k)] += v
 
-print(ename)
-print(etime)
+events = sorted(zip(ename, etime), key=lambda x : x[1], reverse=True)
 
-wedgeprops={"width":0.8}
-plt.pie(etime, labels=ename, autopct="%.1f%%", startangle=90, counterclock=False, wedgeprops=wedgeprops)
-plt.legend(loc=(1.2, 0.3))
+if len(events) > 6:
+    extra = 0
+    for i in range(5, len(events)):
+        extra += events[i][1]
+    events = events[:5] + [("기타", extra)]
+
+# Pie Chart 설정
+en = [events[i][0] for i in range(len(events))]
+et = [events[i][1] for i in range(len(events))]
+colors = ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff']
+
+def custom_autopct(pct):
+    return "%.1fH" % (pct*0.24) if (pct*0.24) >= 1.5 else ""
+
+fig = plt.figure(figsize=(8, 8))
+fig.set_facecolor("white")
+ax = fig.add_subplot()
+
+wedgeprops={
+    "width":0.6,
+    "edgecolor":"w",
+    "linewidth":2
+}
+ax.pie(
+    et,
+    labels=en,
+    autopct=custom_autopct,
+    startangle=90,
+    counterclock=False,
+    colors=colors,
+    wedgeprops=wedgeprops,
+    pctdistance=0.7
+)
+plt.title(
+    label=start_date if start_date == end_date else start_date + " ~ " + end_date,
+    y=0.99,
+    fontdict={
+        "fontsize":23
+    }
+)
+plt.legend(loc=(1, 0.75))
 plt.show()
 
 # %%
