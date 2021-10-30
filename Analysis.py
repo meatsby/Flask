@@ -1,6 +1,7 @@
 # %%
 import matplotlib.pyplot as plt
 import matplotlib
+import numpy as np
 matplotlib.rcParams["font.family"] = "Malgun Gothic"
 matplotlib.rcParams["font.size"] = 15
 matplotlib.rcParams["axes.unicode_minus"] = False
@@ -15,8 +16,9 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 response = service.calendarList().list().execute()
 
-start_date = input("시작일을 입력해주세요.")# "2021-10-11"
-end_date = input("종료일을 입력해주세요.")# "2021-10-11"
+start_date = input("시작일을 입력해주세요. ex)'2021-10-11' : ")
+end_date = input("종료일을 입력해주세요. ex)'2021-10-11' : ")
+len_event = int(input("최대 항목을 입력해주세요. : "))
 
 ename = []
 etime = []
@@ -55,11 +57,11 @@ for c in calendars[1:8]:
 
 events = sorted(zip(ename, etime), key=lambda x : x[1], reverse=True)
 
-if len(events) > 6:
+if len(events) > len_event:
     extra = 0
-    for i in range(5, len(events)):
+    for i in range(len_event, len(events)):
         extra += events[i][1]
-    events = events[:5] + [("기타", extra)]
+    events = events[:len_event] + [("기타", extra)]
 
 # Pie Chart 설정
 en = [events[i][0] for i in range(len(events))]
