@@ -1,11 +1,10 @@
 # %%
 import matplotlib.pyplot as plt
 import matplotlib
-import numpy as np
+
 matplotlib.rcParams["font.family"] = "Malgun Gothic"
 matplotlib.rcParams["font.size"] = 15
 matplotlib.rcParams["axes.unicode_minus"] = False
-from pprint import pprint
 from Google import *
 
 CLIENT_SECRET_FILE = "credentials.json"
@@ -32,12 +31,12 @@ for c in calendars[1:8]:
     is_single_events = True
     orderby = 'startTime'
 
-    events_result = service.events().list(calendarId = calendar_id,
-                                        timeMin = time_min,
-                                        timeMax = time_max,
-                                        singleEvents = is_single_events,
-                                        orderBy = orderby
-                                        ).execute()
+    events_result = service.events().list(calendarId=calendar_id,
+                                          timeMin=time_min,
+                                          timeMax=time_max,
+                                          singleEvents=is_single_events,
+                                          orderBy=orderby
+                                          ).execute()
 
     evts = events_result.get("items")
     evt = [c["summary"]]
@@ -55,7 +54,7 @@ for c in calendars[1:8]:
         elif k in ename:
             etime[ename.index(k)] += v
 
-events = sorted(zip(ename, etime), key=lambda x : x[1], reverse=True)
+events = sorted(zip(ename, etime), key=lambda x: x[1], reverse=True)
 
 if len(events) > len_event:
     extra = 0
@@ -68,17 +67,19 @@ en = [events[i][0] for i in range(len(events))]
 et = [events[i][1] for i in range(len(events))]
 colors = ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff']
 
+
 def custom_autopct(pct):
-    return "%.1fH" % (pct*0.24) if (pct*0.24) >= 1.5 else ""
+    return "%.1fH" % (pct * 0.24) if (pct * 0.24) >= 1.5 else ""
+
 
 fig = plt.figure(figsize=(8, 8))
 fig.set_facecolor("white")
 ax = fig.add_subplot()
 
-wedgeprops={
-    "width":0.6,
-    "edgecolor":"w",
-    "linewidth":2
+wedgeprops = {
+    "width": 0.6,
+    "edgecolor": "w",
+    "linewidth": 2
 }
 ax.pie(
     et,
@@ -94,7 +95,7 @@ plt.title(
     label=start_date if start_date == end_date else start_date + " ~ " + end_date,
     y=0.99,
     fontdict={
-        "fontsize":23
+        "fontsize": 23
     }
 )
 plt.legend(loc=(1, 0.75))

@@ -1,9 +1,8 @@
 import pickle
 import os
 import datetime
-from google_auth_oauthlib.flow import Flow, InstalledAppFlow
+from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
 
 
@@ -12,7 +11,7 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes, prefix=''
     API_SERVICE_NAME = api_name
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
-    
+
     cred = None
     working_dir = os.getcwd()
     token_dir = 'token files'
@@ -46,9 +45,11 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes, prefix=''
         os.remove(os.path.join(working_dir, token_dir, pickle_file))
         return None
 
+
 def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
     dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
     return dt
+
 
 if __name__ == '__main__':
     API_NAME = 'calendar'
