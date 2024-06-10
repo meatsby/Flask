@@ -79,8 +79,8 @@ def main():
             total_time = sum(v.values(), timedelta())
             week_time += total_time
             print('{}: {}'.format(k, str(total_time)))
-            for e, t in v.items():
-                print('├── {}: {}'.format(e, str(t)))
+            for e, t in dict(sorted(v.items(), key=lambda x: x[1], reverse=True)).items():
+                print('├── {!r:35s}: {}'.format(e, str(t)))
         print('From {} to {}: {}'.format(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'), week_time))
         page_token = calendar_list.get('nextPageToken')
         if not page_token:
